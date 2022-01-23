@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "629649682072",
+    "project_id": "crypchat-72269",
+    "storage_bucket": "crypchat-72269.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629649682072:android:05584ecde5005da263eaed",
+        "android_client_info": {
+          "package_name": "com.kuteki.crypchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629649682072-6l9sf8babauu6scqqspckh90k0f76ld1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxJDlD67eYOx79h1AmTPdzs93Df53XtkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629649682072-6l9sf8babauu6scqqspckh90k0f76ld1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
