@@ -76,6 +76,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                     val user = hashMapOf(
                             "username" to username,
                             "password" to password.toSHA512(),
+                            "fcm_token" to "",
                     )
                     db.collection("users")
                             .add(user)
