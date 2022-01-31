@@ -24,21 +24,6 @@ class LauncherActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR)
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            val msg = getString(R.string.msg_token_fmt, token)
-            Log.d("TAG", msg)
-            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-        })
-
         sharedPreferences = getSharedPreferences("SharedPref", Context.MODE_PRIVATE)
         globalUsernameID = sharedPreferences.getString("username","")!!
         try {
@@ -65,6 +50,27 @@ class LauncherActivity : AppCompatActivity() {
                     .addOnFailureListener {
                         Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
                     }
+
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+
+                db.collection("users")
+                    .document(globalUsernameID)
+                    .update("fcm_token", token)
+                    .addOnSuccessListener {
+                        val msg = getString(R.string.msg_token_fmt, token)
+                        Log.d("TAG", msg)
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Cannot update the FCM token", Toast.LENGTH_SHORT).show()
+                    }
+            })
         }
         catch (exception:IllegalArgumentException){
             globalUsernameID = ""
