@@ -37,6 +37,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
         usernameField.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
+
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int,
@@ -47,12 +48,19 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
+
                 db.collection("users")
                     .whereEqualTo("username", usernameField.text.toString())
                     .get()
                     .addOnSuccessListener { documents ->
                         checkBox.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
                         usernameAvailable = true
+
+                        if(usernameField.text.toString().contains(" ")){
+                            usernameAvailable = false
+                            checkBox.setImageResource(R.drawable.ic_baseline_not_interested_24)
+                        }
+
                         for (document in documents) {
                             if (document.exists()) {
                                 usernameAvailable = false

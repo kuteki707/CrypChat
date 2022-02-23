@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     buildFeatures{
@@ -17,9 +17,9 @@ android {
     defaultConfig {
         applicationId "com.kuteki.crypchat"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "0.1"
+        targetSdkVersion 31
+        versionCode 3
+        versionName "0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,7 +50,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-firestore:22.1.2'
     implementation 'com.google.firebase:firebase-firestore-ktx'
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.work:work-runtime-ktx:2.5.0'
@@ -60,6 +60,9 @@ dependencies {
     implementation "com.github.lisawray.groupie:groupie:2.9.0"
     implementation "com.github.lisawray.groupie:groupie-viewbinding:2.9.0"
 
+
+    //sa nu dea crash
+    implementation 'androidx.work:work-runtime-ktx:2.7.0-beta01'
 
 
     // FirebaseUI for Cloud Firestore

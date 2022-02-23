@@ -37,7 +37,7 @@ class LauncherActivity : AppCompatActivity() {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
                             finish()
-                        }else{
+                        }else {
                             globalUsernameID = ""
                             sharedPreferences.edit().putString("username", globalUsernameID).apply()
                             val intent = Intent(this, LoginActivity::class.java)
@@ -66,6 +66,7 @@ class LauncherActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         val msg = getString(R.string.msg_token_fmt, token)
                         Log.d("TAG", msg)
+                        Toast.makeText(this,"$msg",Toast.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener {
                         Toast.makeText(this, "Cannot update the FCM token", Toast.LENGTH_SHORT).show()

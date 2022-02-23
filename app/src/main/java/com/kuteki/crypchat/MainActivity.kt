@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter.setOnItemClickListener { item, view ->
             val roomItem = item as RoomItem
-            Log.e("lala","${roomItem.room}")
+            //Log.e("lala","${roomItem.room}")
             db.collection("rooms").whereEqualTo("roomName",roomItem.room).get()
                 .addOnSuccessListener {documents ->
                     for(document in documents){
@@ -156,10 +156,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-            R.id.donate_menu -> {
-                val url = "https://paypal.me/kristofedwin?country.x=RO&locale.x=en_US"
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(url)
+            R.id.about_me -> {
+                val intent = Intent(this,AboutMe::class.java)
                 startActivity(intent)
             }
             R.id.create_room -> {

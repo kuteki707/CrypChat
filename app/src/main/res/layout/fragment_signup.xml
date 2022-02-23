@@ -72,4 +72,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/signup_password_text" />
 
+    <ImageView
+        android:id="@+id/image_view_signup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_crypchat_logo_orizontal"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/signup_username_text"
+        app:layout_constraintEnd_toEndOf="@+id/check_box"
+        app:layout_constraintStart_toStartOf="@+id/signup_username_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

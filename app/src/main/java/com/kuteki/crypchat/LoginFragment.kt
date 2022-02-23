@@ -41,7 +41,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             dbUsername = document.get("username").toString()
                             dbPassword = document.get("password").toString()
                             if (dbUsername == username && dbPassword == password.toSHA512()) {
-                                goodCredentials=true
+                                goodCredentials = true
                                 globalUsernameID = document.id
                                 val intent =
                                     Intent(activity, MainActivity::class.java)
@@ -50,18 +50,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 startActivity(intent)
                                 activity!!.finish()
 
-                            } else {
-                                Toast.makeText(
-                                    activity,
-                                    "Wrong credentials",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
                         }
-                    }
-            if(!goodCredentials){
-                Toast.makeText(activity,"Wrong credentials", Toast.LENGTH_SHORT).show()
-            }
+                    }.addOnCompleteListener {
+                        if(!goodCredentials){
+                            Toast.makeText(
+                                activity,
+                                "Wrong credentials",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }.addOnFailureListener {
+                    Toast.makeText(
+                        activity,
+                        "Wrong credentials",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
     }
 }

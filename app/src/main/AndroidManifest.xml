@@ -9,18 +9,25 @@
         android:roundIcon="@drawable/ic_crypchat_3"
         android:supportsRtl="true"
         android:theme="@style/Theme.CrypChat">
+        <activity
+            android:name=".AboutMe"
+            android:exported="false" />
         <activity android:name=".ChatActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
+
         <service
             android:name=".MyFirebaseMessagingService"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".LauncherActivity">
+
+        <activity android:name=".LauncherActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

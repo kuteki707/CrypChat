@@ -7,59 +7,58 @@
     tools:context=".LoginFragment"
     android:background="@color/white">
 
-
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="10dp"
-        android:id="@+id/login_card_view_username"
+    <EditText
+        android:id="@+id/login_username_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="80dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/login_password_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/login_password_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login_card_view_password" >
-
-        <EditText
-            android:id="@+id/login_username_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Username"
-            android:inputType="textPersonName" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="10dp"
-        android:layout_marginEnd="32dp"
+        android:ems="10"
         android:layout_marginStart="32dp"
-        android:id="@+id/login_card_view_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginEnd="32dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_view_login" />
 
-        <EditText
-            android:id="@+id/login_password_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword" />
-    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/login_button"
-        android:background="@drawable/boxstyle"
-        android:layout_marginTop="150dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/boxstyle"
+        android:layout_marginTop="80dp"
         android:text="Login"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_card_view_password" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_password_text" />
+
+    <ImageView
+        android:id="@+id/image_view_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ic_crypchat_logo_text"
+        app:layout_constraintBottom_toTopOf="@+id/login_username_text"
+        app:layout_constraintEnd_toEndOf="@+id/login_username_text"
+        app:layout_constraintStart_toStartOf="@+id/login_username_text"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
