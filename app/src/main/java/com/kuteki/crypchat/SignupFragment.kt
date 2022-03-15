@@ -1,24 +1,16 @@
 package com.kuteki.crypchat
 
-import android.app.Activity
 import android.content.Intent
-import android.nfc.Tag
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import kotlin.concurrent.thread
-
-private val TAG = "Signup"
 
 class SignupFragment : Fragment(R.layout.fragment_signup) {
     lateinit var username:String
@@ -73,6 +65,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                     }
             }
         })
+
         signupButton.setOnClickListener {
             username = usernameField.text.toString()
             if (passwordField.text.toString() == passwordConfirmField.text.toString() && passwordField.text.toString() != "") {
@@ -93,6 +86,20 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                                 Toast.makeText(activity, "Succes!", Toast.LENGTH_SHORT).show()
                                 globalUsernameID = documentReference.id
                                 signupButton.isEnabled = false
+
+                                var token = arguments?.getString("fcm_temp_token")
+
+                                db.collection("users")
+                                    .document(globalUsernameID)
+                                    .update("fcm_token", token)
+                                    .addOnSuccessListener {
+                                        val msg = getString(R.string.msg_token_fmt, token)
+                                        Log.d("TAG", msg)
+                                    }
+                                    .addOnFailureListener {
+                                        Toast.makeText(activity, "Cannot populate the FCM token", Toast.LENGTH_SHORT).show()
+                                    }
+
                                 val intent = Intent(activity, MainActivity::class.java)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

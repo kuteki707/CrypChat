@@ -16,6 +16,7 @@ import com.kuteki.crypchat.databinding.ActivityLauncherBinding
 class LauncherActivity : AppCompatActivity() {
     lateinit var binding: ActivityLauncherBinding
     lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLauncherBinding.inflate(layoutInflater)
@@ -60,16 +61,18 @@ class LauncherActivity : AppCompatActivity() {
                 // Get new FCM registration token
                 val token = task.result
 
+                // Add the token for later usage (for sign-up)
+                sharedPreferences.edit().putString("fcm_temp_token", token).apply()
+
                 db.collection("users")
                     .document(globalUsernameID)
                     .update("fcm_token", token)
                     .addOnSuccessListener {
                         val msg = getString(R.string.msg_token_fmt, token)
                         Log.d("TAG", msg)
-                        Toast.makeText(this,"$msg",Toast.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this, "Cannot update the FCM token", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Cannot populate the FCM token", Toast.LENGTH_SHORT).show()
                     }
             })
         }
@@ -82,8 +85,5 @@ class LauncherActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-
-
     }
 }

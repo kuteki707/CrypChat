@@ -94,7 +94,7 @@ class ChatActivity : AppCompatActivity() {
                 val message = binding.messageBoxView.text.toString()
 
                 db.collection("rooms").document(roomID).get().addOnSuccessListener {document ->
-                    val encryptedMessage = encrypt(document.get("participant1").toString(),document.get("participant2").toString(),message)
+                    val encryptedMessage = encrypt(document.get("participant1").toString(), document.get("participant2").toString(), message)
                     val messageToSend = hashMapOf(
                         "sentBy" to globalUsernameID,
                         "recievedBy" to tempRecieverID,
@@ -108,8 +108,6 @@ class ChatActivity : AppCompatActivity() {
                     binding.messageBoxView.text.clear()
                     binding.recyclerViewChat
                 }
-
-
             }
         }
 
@@ -129,13 +127,118 @@ class ChatActivity : AppCompatActivity() {
 //            }
 //    }
 
-
 }
-public fun encrypt(participant1:String,participant2:String,message:String,):String {
-   //private encryption algorithm
+
+public fun encrypt(participant1:String, participant2:String, message:String):String {
+    var participant1_array = arrayListOf<Int>()
+    var participant2_array = arrayListOf<Int>()
+    var final_array = arrayListOf<Int>()
+    var encryptedMessage = ""
+
+    for (char in participant1) {
+        var n = char.toInt()
+        var s = 0
+
+        while (n > 0 || s >= 10) {
+            if (s >= 10) {
+                s = s % 10 + s / 10
+            } else {
+                s = s + n % 10
+                n = n / 10
+            }
+        }
+        participant1_array.add(s)
+    }
+
+    for (char in participant2) {
+        var n = char.toInt()
+        var s = 0
+
+        while (n > 0 || s >= 10) {
+            if (s >= 10) {
+                s = s % 10 + s / 10
+            } else {
+                s = s + n % 10
+                n = n / 10
+            }
+        }
+        participant2_array.add(s)
+    }
+
+    var i = 0
+
+    for (z in participant1_array) {
+        final_array.add(z + participant2_array[i])
+        i++
+    }
+
+    i=0
+
+    for(letter in message){
+        var letter_int = letter.toInt()
+        letter_int += final_array[i]
+        i++
+        encryptedMessage += letter_int.toChar()
+        if(i<20)
+            i=0
+    }
+
     return encryptedMessage
 }
-public fun decrypt(participant1: String,participant2: String,encryptedMessage:String):String{
-   //private decryption algorithm
+
+public fun decrypt(participant1: String, participant2: String, encryptedMessage:String):String{
+    var participant1_array = arrayListOf<Int>()
+    var participant2_array = arrayListOf<Int>()
+    var final_array = arrayListOf<Int>()
+    var decryptedMessage = ""
+
+    for(char in participant1) {
+        var n = char.toInt()
+        var s = 0
+
+        while(n > 0 || s >= 10){
+            if(s >= 10){
+                s = s % 10 + s / 10
+            }else {
+                s = s + n % 10
+                n = n / 10
+            }
+        }
+        participant1_array.add(s)
+    }
+
+    for(char in participant2) {
+        var n = char.toInt()
+        var s = 0
+
+        while(n > 0 || s >= 10){
+            if(s >= 10){
+                s = s % 10 + s / 10
+            }else {
+                s = s + n % 10
+                n = n / 10
+            }
+        }
+        participant2_array.add(s)
+    }
+
+    var i=0
+
+    for(z in participant1_array){
+        final_array.add(z + participant2_array[i])
+        i++
+    }
+
+    i=0
+
+    for(letter in encryptedMessage){
+        var letter_int = letter.toInt()
+        letter_int -= final_array[i]
+        i++
+        decryptedMessage += letter_int.toChar()
+        if(i<20)
+            i=0
+    }
+
     return decryptedMessage
 }
