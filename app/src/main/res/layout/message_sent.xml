@@ -63,7 +63,9 @@
             <View
                 android:id="@+id/view"
                 android:layout_width="120dp"
-                android:layout_height="1dp" />
+                android:layout_height="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

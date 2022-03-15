@@ -94,7 +94,7 @@ class ChatActivity : AppCompatActivity() {
                 val message = binding.messageBoxView.text.toString()
 
                 db.collection("rooms").document(roomID).get().addOnSuccessListener {document ->
-                    val encryptedMessage = encrypt(document.get("participant1").toString(),document.get("participant2").toString(),message)
+                    val encryptedMessage = encrypt(document.get("participant1").toString(), document.get("participant2").toString(), message)
                     val messageToSend = hashMapOf(
                         "sentBy" to globalUsernameID,
                         "recievedBy" to tempRecieverID,
@@ -108,8 +108,6 @@ class ChatActivity : AppCompatActivity() {
                     binding.messageBoxView.text.clear()
                     binding.recyclerViewChat
                 }
-
-
             }
         }
 
@@ -129,13 +127,14 @@ class ChatActivity : AppCompatActivity() {
 //            }
 //    }
 
+}
 
+public fun encrypt(participant1:String, participant2:String, message:String):String {
+    //private encryption algorithm
+    return message
 }
-public fun encrypt(participant1:String,participant2:String,message:String,):String {
-   //private encryption algorithm
+
+public fun decrypt(participant1: String, participant2: String, encryptedMessage:String):String{
+    //private decryption algorithm
     return encryptedMessage
-}
-public fun decrypt(participant1: String,participant2: String,encryptedMessage:String):String{
-   //private decryption algorithm
-    return decryptedMessage
 }
