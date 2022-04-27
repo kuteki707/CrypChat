@@ -27,6 +27,7 @@ import com.xwray.groupie.GroupieViewHolder
 
 public  var roomID:String = ""
 public var tempRecieverID:String = ""
+public var myUsername = ""
 var isFirstLoad = true
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
 //        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_crypchat_logo_orizontal)
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -57,23 +59,42 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewMain.adapter = adapter
 
         adapter.setOnItemClickListener { item, view ->
-            val roomItem = item as RoomItem
-            //Log.e("lala","${roomItem.room}")
-            db.collection("rooms").whereEqualTo("roomName",roomItem.room).get()
-                .addOnSuccessListener {documents ->
-                    for(document in documents){
-                        roomID = document.id
-                        if(document.get("participant1") == globalUsernameID){
-                            tempRecieverID = document.get("participant2").toString()
-                            val intent = Intent(this,ChatActivity::class.java)
-                            startActivity(intent)
-                        }else if(document.get("participant2") == globalUsernameID){
-                            tempRecieverID = document.get("participant1").toString()
-                            val intent = Intent(this,ChatActivity::class.java)
-                            startActivity(intent)
+            try {
+                val roomItem = item as RoomItem
+                db.collection("rooms").whereEqualTo("roomName",roomItem.room).get()
+                    .addOnSuccessListener {documents ->
+                        for(document in documents){
+                            roomID = document.id
+                            if(document.get("participant1") == globalUsernameID){
+                                tempRecieverID = document.get("participant2").toString()
+                                val intent = Intent(this,ChatActivity::class.java)
+                                startActivity(intent)
+                            }else if(document.get("participant2") == globalUsernameID){
+                                tempRecieverID = document.get("participant1").toString()
+                                val intent = Intent(this,ChatActivity::class.java)
+                                startActivity(intent)
+                            }
                         }
                     }
-                }
+            }catch (e:ClassCastException){
+                val roomItem = item as RoomItem2
+                db.collection("rooms").whereEqualTo("roomName",roomItem.room).get()
+                    .addOnSuccessListener {documents ->
+                        for(document in documents){
+                            roomID = document.id
+                            if(document.get("participant1") == globalUsernameID){
+                                tempRecieverID = document.get("participant2").toString()
+                                val intent = Intent(this,ChatActivity::class.java)
+                                startActivity(intent)
+                            }else if(document.get("participant2") == globalUsernameID){
+                                tempRecieverID = document.get("participant1").toString()
+                                val intent = Intent(this,ChatActivity::class.java)
+                                startActivity(intent)
+                            }
+                        }
+                    }
+            }
+
 
         }
 
@@ -92,22 +113,42 @@ class MainActivity : AppCompatActivity() {
 
                         db.collection("users").document(tempParticipant).get()
                             .addOnSuccessListener { document ->
-                                val room = RoomItem(
-                                    document.get("username").toString(),
-                                    documentChange.document.data.get("roomName").toString(),
-                                    decrypt(documentChange.document.get("participant1").toString(),
-                                        documentChange.document.get("participant2").toString(),
-                                        documentChange.document.data.get("lastMessage").toString()),
-                                    documentChange.document.getDate("timestamp").toString().substring(4,16)
-                                )
+                                if(documentChange.document.data.get("latestMessageSentBy") == globalUsernameID){
+                                    val room = RoomItem(
+                                        document.get("username").toString(),
+                                        documentChange.document.data.get("roomName").toString(),
+                                        decrypt(documentChange.document.get("participant1").toString(),
+                                            documentChange.document.get("participant2").toString(),
+                                            documentChange.document.data.get("lastMessage").toString()),
+                                        documentChange.document.getDate("timestamp").toString().substring(4,16)
+                                    )
 
-                                if (itemsPositions.get(documentChange.document.id) == null) {
-                                    adapter.add(room)
-                                    itemsPositions.put(documentChange.document.id, adapter.getAdapterPosition(room))
-                                } else {
-                                    adapter.removeGroupAtAdapterPosition(itemsPositions.get(documentChange.document.id)!!)
-                                    adapter.add(itemsPositions.get(documentChange.document.id)!!, room)
+                                    if (itemsPositions.get(documentChange.document.id) == null) {
+                                        adapter.add(room)
+                                        itemsPositions.put(documentChange.document.id, adapter.getAdapterPosition(room))
+                                    } else {
+                                        adapter.removeGroupAtAdapterPosition(itemsPositions.get(documentChange.document.id)!!)
+                                        adapter.add(itemsPositions.get(documentChange.document.id)!!, room)
+                                    }
+                                }else{
+                                    val room = RoomItem2(
+                                        document.get("username").toString(),
+                                        documentChange.document.data.get("roomName").toString(),
+                                        decrypt(documentChange.document.get("participant1").toString(),
+                                            documentChange.document.get("participant2").toString(),
+                                            documentChange.document.data.get("lastMessage").toString()),
+                                        documentChange.document.getDate("timestamp").toString().substring(4,16)
+                                    )
+
+                                    if (itemsPositions.get(documentChange.document.id) == null) {
+                                        adapter.add(room)
+                                        itemsPositions.put(documentChange.document.id, adapter.getAdapterPosition(room))
+                                    } else {
+                                        adapter.removeGroupAtAdapterPosition(itemsPositions.get(documentChange.document.id)!!)
+                                        adapter.add(itemsPositions.get(documentChange.document.id)!!, room)
+                                    }
                                 }
+
                             }
                     }
 
@@ -116,21 +157,40 @@ class MainActivity : AppCompatActivity() {
 
                         db.collection("users").document(tempParticipant).get()
                             .addOnSuccessListener { document ->
-                                val room = RoomItem(
-                                    document.get("username").toString(),
-                                    documentChange.document.data.get("roomName").toString(),
-                                    decrypt(documentChange.document.get("participant1").toString(),
-                                        documentChange.document.get("participant2").toString(),
-                                        documentChange.document.data.get("lastMessage").toString()),
-                                    documentChange.document.getDate("timestamp").toString().substring(4,16)
-                                )
+                                if(documentChange.document.data.get("latestMessageSentBy") == globalUsernameID){
+                                    val room = RoomItem(
+                                        document.get("username").toString(),
+                                        documentChange.document.data.get("roomName").toString(),
+                                        decrypt(documentChange.document.get("participant1").toString(),
+                                            documentChange.document.get("participant2").toString(),
+                                            documentChange.document.data.get("lastMessage").toString()),
+                                        documentChange.document.getDate("timestamp").toString().substring(4,16)
+                                    )
 
-                                if (itemsPositions.get(documentChange.document.id) == null) {
-                                    adapter.add(room)
-                                    itemsPositions.put(documentChange.document.id, adapter.getAdapterPosition(room))
-                                } else {
-                                    adapter.removeGroupAtAdapterPosition(itemsPositions.get(documentChange.document.id)!!)
-                                    adapter.add(itemsPositions.get(documentChange.document.id)!!, room)
+                                    if (itemsPositions.get(documentChange.document.id) == null) {
+                                        adapter.add(room)
+                                        itemsPositions.put(documentChange.document.id, adapter.getAdapterPosition(room))
+                                    } else {
+                                        adapter.removeGroupAtAdapterPosition(itemsPositions.get(documentChange.document.id)!!)
+                                        adapter.add(itemsPositions.get(documentChange.document.id)!!, room)
+                                    }
+                                }else{
+                                    val room = RoomItem2(
+                                        document.get("username").toString(),
+                                        documentChange.document.data.get("roomName").toString(),
+                                        decrypt(documentChange.document.get("participant1").toString(),
+                                            documentChange.document.get("participant2").toString(),
+                                            documentChange.document.data.get("lastMessage").toString()),
+                                        documentChange.document.getDate("timestamp").toString().substring(4,16)
+                                    )
+
+                                    if (itemsPositions.get(documentChange.document.id) == null) {
+                                        adapter.add(room)
+                                        itemsPositions.put(documentChange.document.id, adapter.getAdapterPosition(room))
+                                    } else {
+                                        adapter.removeGroupAtAdapterPosition(itemsPositions.get(documentChange.document.id)!!)
+                                        adapter.add(itemsPositions.get(documentChange.document.id)!!, room)
+                                    }
                                 }
                             }
                     }
@@ -225,6 +285,7 @@ class MainActivity : AppCompatActivity() {
 
                                                                                             }else{
                                                                                                 val roomInfo = hashMapOf(
+                                                                                                        "latestMessageSentBy" to globalUsernameID,
                                                                                                         "roomName" to tempUser1 +","+ tempUser2,
                                                                                                         "timestamp" to FieldValue.serverTimestamp(),
                                                                                                         "participant1" to user1tempid,

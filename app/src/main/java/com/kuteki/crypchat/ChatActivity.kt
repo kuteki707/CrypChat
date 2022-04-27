@@ -19,6 +19,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.ktx.toObject
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class ChatActivity : AppCompatActivity() {
     lateinit var binding: ActivityChatBinding
@@ -34,6 +35,17 @@ class ChatActivity : AppCompatActivity() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR)
 
         supportActionBar?.title = "Loading..."
+
+        db.collection("rooms").document(roomID)
+            .get().addOnSuccessListener { document ->
+                if(document.contains("latestMessageSentBy")){
+                    Log.e("field","found")
+                }else{
+                    Log.e("field","not found")
+                    val latestMessageMap = hashMapOf("latestMessageSentBy" to globalUsernameID)
+                    db.collection("rooms").document(roomID).set(latestMessageMap, SetOptions.merge())
+                }
+        }
 
         db.collection("rooms").document(roomID).get()
             .addOnSuccessListener {document->
@@ -94,7 +106,7 @@ class ChatActivity : AppCompatActivity() {
                 val message = binding.messageBoxView.text.toString()
 
                 db.collection("rooms").document(roomID).get().addOnSuccessListener {document ->
-                    val encryptedMessage = encrypt(document.get("participant1").toString(), document.get("participant2").toString(), message)
+                    val encryptedMessage = encrypt(document.get("participant1").toString(),document.get("participant2").toString(),message)
                     val messageToSend = hashMapOf(
                         "sentBy" to globalUsernameID,
                         "recievedBy" to tempRecieverID,
@@ -103,11 +115,14 @@ class ChatActivity : AppCompatActivity() {
                     )
 
                     messagesPath.add(messageToSend)
+                    db.collection("rooms").document(roomID).update("latestMessageSentBy", globalUsernameID)
                     db.collection("rooms").document(roomID).update("lastMessage",encryptedMessage)
                     db.collection("rooms").document(roomID).update("timestamp",FieldValue.serverTimestamp())
                     binding.messageBoxView.text.clear()
                     binding.recyclerViewChat
                 }
+
+
             }
         }
 
@@ -127,14 +142,5 @@ class ChatActivity : AppCompatActivity() {
 //            }
 //    }
 
-}
 
-public fun encrypt(participant1:String, participant2:String, message:String):String {
-    //private encryption algorithm
-    return message
-}
-
-public fun decrypt(participant1: String, participant2: String, encryptedMessage:String):String{
-    //private decryption algorithm
-    return encryptedMessage
 }

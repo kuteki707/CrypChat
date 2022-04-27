@@ -23,7 +23,7 @@
         <entry key="app/src/main/res/drawable/ic_crypchat_logo_simplu.xml" value="0.24375" />
         <entry key="app/src/main/res/drawable/ic_crypchat_logo_text.xml" value="0.24375" />
         <entry key="app/src/main/res/drawable/ic_done.xml" value="0.24539473684210528" />
-        <entry key="app/src/main/res/layout/activity_about_me.xml" value="0.23519736842105263" />
+        <entry key="app/src/main/res/layout/activity_about_me.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.22631578947368422" />
         <entry key="app/src/main/res/layout/activity_launcher.xml" value="0.22631578947368422" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22631578947368422" />
@@ -35,6 +35,7 @@
         <entry key="app/src/main/res/layout/message_sent.xml" value="0.22631578947368422" />
         <entry key="app/src/main/res/layout/recycler_view_item.xml" value="0.22631578947368422" />
         <entry key="app/src/main/res/layout/room.xml" value="0.22631578947368422" />
+        <entry key="app/src/main/res/layout/room2.xml" value="0.20560109289617487" />
         <entry key="app/src/main/res/menu/top_menu_main.xml" value="0.23519736842105263" />
       </map>
     </option>
@@ -44,5 +45,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.22631578947368422" />
+      </ProjectState>
+    </option>
   </component>
 </project>
